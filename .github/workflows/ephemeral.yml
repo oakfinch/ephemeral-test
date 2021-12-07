@@ -6,9 +6,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14
-      - run: echo -n "$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
-      - run: KEY="$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"; SHA=`echo -n "$KEY" | openssl dgst -binary -sha256 | xxd -p`; echo "${SHA:0:8}"
+      - name: Get PR key
+        id: key
+        run: \
+          KEY="$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"; \
+          SHA=`echo -n "$KEY" | openssl dgst -binary -sha256 | xxd -p`; \
+          echo ::set-output name=raw::"$KEY" \
+          echo ::set-output name=full_sha::"$SHA" \
+          echo ::set-output name=sha::"${SHA:0:8}"
+      - run: echo "${{ steps.key.outputs.raw }}"
+      - run: echo "${{ steps.key.outputs.full_sha }}"
+      - run: echo "${{ steps.key.outputs.sha }}"

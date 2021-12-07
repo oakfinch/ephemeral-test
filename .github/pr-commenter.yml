@@ -8,5 +8,5 @@ comment:
     Automated comment created by [PR Commenter](https://github.com/exercism/pr-commenter-action) :robot:.
 
   snippets:
-    body: |
-      https://{{sha}}.{{domain}} created {{now}}
+    - body: |
+        https://{{sha}}.{{domain}} created {{now}}

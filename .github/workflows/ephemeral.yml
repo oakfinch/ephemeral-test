@@ -17,7 +17,7 @@ jobs:
       - run: echo "${{ steps.key.outputs.raw }}"
       - run: echo "${{ steps.key.outputs.full_sha }}"
       - run: echo "${{ steps.key.outputs.sha }}"
-      - uses: @oakfinch/create-heroku-app-action@v1
+      - uses: oakfinch/create-heroku-app-action@v1
         with:
           DOMAIN: ephemeral-lifetime.life
           SUBDOMAIN: ${{ steps.key.outputs.sha }}

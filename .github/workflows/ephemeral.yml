@@ -8,7 +8,8 @@ jobs:
     steps:
       - name: Get PR key
         id: key
-        run: KEY="$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"; \
+        run: |
+          KEY="$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"; \
           SHA=`echo -n "$KEY" | openssl dgst -binary -sha256 | xxd -p`; \
           echo ::set-output name=raw::"$KEY" \
           echo ::set-output name=full_sha::"$SHA" \

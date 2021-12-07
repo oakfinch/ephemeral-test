@@ -10,4 +10,4 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      - run: echo "$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
+      - run: echo "$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"

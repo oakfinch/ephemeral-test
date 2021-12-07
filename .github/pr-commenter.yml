@@ -9,5 +9,5 @@ comment:
 
   snippets:
     - id: snippet
-    - body: |
+      body: |
         https://{{sha}}.{{domain}} created {{now}}

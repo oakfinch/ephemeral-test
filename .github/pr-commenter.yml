@@ -12,4 +12,4 @@ comment:
       files:
         - '*'
       body: |
-        https://{{sha}}.{{domain}} created {{now}}
+        https://{{app_name}}.{{domain}} created {{now}}

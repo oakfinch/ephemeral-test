@@ -21,7 +21,7 @@ jobs:
           template-variables: |
             {
               "action": "${{ github.event.action }}",
-              "sha": "${{ steps.key.outputs.sha }}",
+              "app_name": "${{ steps.key.outputs.sha }}",
               "domain": "ephemeral-lifetime.life",
               "now": "${{ steps.key.outputs.now }}"
             }

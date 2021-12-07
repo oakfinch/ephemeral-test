@@ -17,3 +17,10 @@ jobs:
       - run: echo "${{ steps.key.outputs.raw }}"
       - run: echo "${{ steps.key.outputs.full_sha }}"
       - run: echo "${{ steps.key.outputs.sha }}"
+      - uses: @oakfinch/create-heroku-app-action@v1
+        with:
+          DOMAIN: ephemeral-lifetime.life
+          SUBDOMAIN: ${{ steps.key.outputs.sha }}
+          HEROKU_API_TOKEN: d1f1cbfa-1559-47d5-82e0-1919be20b337
+          NAMECHEAP_USERNAME: natevolker
+          NAMECHEAP_API_KEY: c61bc37b172a42648da6e86b17b6000b

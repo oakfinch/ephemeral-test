@@ -13,7 +13,7 @@ jobs:
           SHA=`echo -n "$KEY" | openssl dgst -binary -sha256 | xxd -p`
           echo ::set-output name=raw::"$KEY"
           echo ::set-output name=full_sha::"$SHA"
-          echo ::set-output name=sha::"${SHA:0:8}"
+          echo ::set-output name=sha::"${SHA:0:16}"
       - run: echo "${{ steps.key.outputs.raw }}"
       - run: echo "${{ steps.key.outputs.full_sha }}"
       - run: echo "${{ steps.key.outputs.sha }}"
@@ -22,5 +22,5 @@ jobs:
           DOMAIN: ephemeral-lifetime.life
           SUBDOMAIN: ${{ steps.key.outputs.sha }}
           HEROKU_API_TOKEN: d1f1cbfa-1559-47d5-82e0-1919be20b337
-          NAMECHEAP_USERNAME: natevolker
-          NAMECHEAP_API_KEY: c61bc37b172a42648da6e86b17b6000b
+          CLOUDFLARE_TOKEN: Wh-YZLpjyo9lP_1APs6WyNn07VKQGSg6Slnp5yC0
+          CLOUDFLARE_ZONE: 36e90420179121a36100b350509d4cb9

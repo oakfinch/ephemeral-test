@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: 14
       - run: echo -n "$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
-      - run: echo -n "$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")" | openssl dgst -binary -sha256 | xxd -p
+      - run: echo -n "$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")" | openssl dgst -binary -sha256 | xxd -p | cut 0-16

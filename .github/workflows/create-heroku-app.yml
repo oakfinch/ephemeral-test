@@ -1,0 +1,35 @@
+# name: Create Heroku App
+# pull_request:
+#    types: [opened, reopened]
+
+# jobs:
+#   create-heroku-app:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get PR key
+#         id: key
+#         run: |
+#           KEY="$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
+#           SHA=`echo -n "$KEY" | openssl dgst -binary -sha256 | xxd -p`
+#           echo ::set-output name=raw::"$KEY"
+#           echo ::set-output name=full_sha::"$SHA"
+#           echo ::set-output name=sha::"${SHA:0:12}"
+#       - uses: oakfinch/create-heroku-app-action@v1
+#         with:
+#           DOMAIN: ephemeral-lifetime.life
+#           SUBDOMAIN: ${{ steps.key.outputs.sha }}
+#           HEROKU_API_TOKEN: d1f1cbfa-1559-47d5-82e0-1919be20b337
+#           CLOUDFLARE_TOKEN: Wh-YZLpjyo9lP_1APs6WyNn07VKQGSg6Slnp5yC0
+#           CLOUDFLARE_ZONE: 36e90420179121a36100b350509d4cb9
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Build, Push and Deploy to Heroku
+#         id: heroku
+#         uses: cloutojp/heroku-deploy@v1
+#         with:
+#           email: natevolker@gmail.com
+#           api_key: d1f1cbfa-1559-47d5-82e0-1919be20b337
+#           app_name: ${{ steps.key.outputs.sha }}

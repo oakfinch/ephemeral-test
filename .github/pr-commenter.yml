@@ -1,0 +1,12 @@
+comment:
+  on-update: recreate
+  header: |
+    This is the header
+
+  footer: |
+    ---
+    Automated comment created by [PR Commenter](https://github.com/exercism/pr-commenter-action) :robot:.
+
+  snippets:
+    body: |
+      https://{{sha}}.{{domain}} created {{now}}

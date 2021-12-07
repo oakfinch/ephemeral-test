@@ -13,7 +13,19 @@ jobs:
           echo ::set-output name=raw::"$KEY"
           echo ::set-output name=full_sha::"$SHA"
           echo ::set-output name=sha::"${SHA:0:12}"
-          echo "${{ github.event.action }}"
+          echo ::set-output name=now::"$(date)"
+      - uses: exercism/pr-commenter-action@v1.3.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          config-file: ".github/pr-commenter.yml"
+          template-variables: |
+            {
+              "action": "${{ github.event.action }}",
+              "sha": "${{ steps.key.outputs.sha }}",
+              "domain": "ephemeral-lifetime.life",
+              "now": "${{ steps.key.outputs.now }}"
+            }
+            
   #     - uses: oakfinch/create-heroku-app-action@v1
   #       with:
   #         DOMAIN: ephemeral-lifetime.life

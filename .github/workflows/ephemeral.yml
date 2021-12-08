@@ -15,7 +15,7 @@ jobs:
           echo ::set-output name=full_sha::"$SHA"
           echo ::set-output name=sha::"${SHA:0:14}"
           echo ::set-output name=now::"$(date)"
-      - uses: oakfinch/create-heroku-app-action@v1.0.2
+      - uses: oakfinch/create-heroku-app-action@v1.0.3
         with:
           DOMAIN: ephemeral-lifetime.life
           SUBDOMAIN: ${{ steps.key.outputs.sha }}

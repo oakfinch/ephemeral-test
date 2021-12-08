@@ -1,13 +1,52 @@
 name: Ephemeral
 on: [pull_request]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# 
 jobs:
-  build:
+  create-heroku-app:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Get PR key
+        id: key
+        run: |
+          KEY="$GITHUB_REPOSITORY-$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
+          SHA=`echo -n "$KEY" | openssl dgst -binary -sha256 | xxd -p`
+          echo ::set-output name=raw::"$KEY"
+          echo ::set-output name=full_sha::"$SHA"
+          echo ::set-output name=sha::"${SHA:0:14}"
+          echo ::set-output name=now::"$(date)"
+      - uses: oakfinch/create-heroku-app-action@v1.0.3
         with:
-          node-version: 14
-      - run: echo ${{ env.GITHUB_EVENT_PATH }}
+          DOMAIN: ephemeral-lifetime.life
+          SUBDOMAIN: ${{ steps.key.outputs.sha }}
+          HEROKU_API_TOKEN: d1f1cbfa-1559-47d5-82e0-1919be20b337
+          CLOUDFLARE_TOKEN: Wh-YZLpjyo9lP_1APs6WyNn07VKQGSg6Slnp5yC0
+          CLOUDFLARE_ZONE: 36e90420179121a36100b350509d4cb9
+  deploy:
+    needs: create-heroku-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build, Push and Deploy to Heroku
+        id: heroku
+        uses: cloutojp/heroku-deploy@v2.0.7
+        with:
+          email: natevolker@gmail.com
+          api_key: d1f1cbfa-1559-47d5-82e0-1919be20b337
+          app_name: ${{ steps.key.outputs.sha }}
+  comment:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: exercism/pr-commenter-action@v1.3.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          config-file: ".github/pr-commenter.yml"
+          template-variables: |
+            {
+              "action": "${{ github.event.action }}",
+              "app_name": "${{ steps.key.outputs.sha }}",
+              "domain": "ephemeral-lifetime.life",
+              "now": "${{ steps.key.outputs.now }}"
+            }
